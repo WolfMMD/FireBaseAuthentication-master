@@ -26,6 +26,7 @@ import examples.android.example.com.firebaseauthentication.databinding.ChatLayou
 
 public class ChatActivity extends AppCompatActivity implements ActivityCallback {
 
+    //
     private DatabaseReference mDatabase;
     private ChatAdapter chatAdapter;
     private ChatLayoutBinding chatLayoutBinding;
