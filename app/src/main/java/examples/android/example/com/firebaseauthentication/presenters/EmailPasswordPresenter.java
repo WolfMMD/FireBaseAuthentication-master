@@ -254,6 +254,7 @@ public class EmailPasswordPresenter implements EmailPasswordContract.Presenter {
 
     }
 
+
     @Override
     public boolean isVerified() {
 

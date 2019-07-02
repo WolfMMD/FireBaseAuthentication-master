@@ -26,7 +26,6 @@ import examples.android.example.com.firebaseauthentication.databinding.ChatLayou
 
 public class ChatActivity extends AppCompatActivity implements ActivityCallback {
 
-    //
     private DatabaseReference mDatabase;
     private ChatAdapter chatAdapter;
     private ChatLayoutBinding chatLayoutBinding;
@@ -88,7 +87,9 @@ public class ChatActivity extends AppCompatActivity implements ActivityCallback 
 //                data.setId("userId");
                 data.setName(name);
                 chatLayoutBinding.editText.setText(" ");
-                mDatabase.child(String.valueOf(new Date().getTime())).setValue(data);
+
+                //add chats to DB
+                mDatabase.child("chats").child("messages").child(String.valueOf(new Date().getTime())).setValue(data);
 
             }
         });

@@ -39,7 +39,6 @@ public interface EmailPasswordContract {
         void firebaseAuthWithGoogle(GoogleSignInAccount acct);
 
 
-
     }
 
 

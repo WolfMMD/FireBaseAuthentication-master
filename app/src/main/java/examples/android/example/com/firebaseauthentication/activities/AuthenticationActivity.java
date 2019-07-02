@@ -3,7 +3,6 @@ package examples.android.example.com.firebaseauthentication.activities;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -15,17 +14,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 import examples.android.example.com.firebaseauthentication.R;
-import examples.android.example.com.firebaseauthentication.activities.chatting.ChatActivity;
+import examples.android.example.com.firebaseauthentication.activities.chatting.ContactsActivity;
 import examples.android.example.com.firebaseauthentication.databinding.AuthenticationBinding;
-import examples.android.example.com.firebaseauthentication.databinding.GoogleAuthBinding;
 import examples.android.example.com.firebaseauthentication.interfaces.EmailPasswordContract;
 import examples.android.example.com.firebaseauthentication.presenters.EmailPasswordPresenter;
 
@@ -59,7 +53,7 @@ public class AuthenticationActivity extends AppCompatActivity implements EmailPa
         presenter = new EmailPasswordPresenter(this,callbackManager);
 
         //FB
-        authBinding.facebookLoginButton.setReadPermissions("email");
+      //  authBinding.facebookLoginButton.setReadPermissions("email");
 
         authBinding.facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,7 +221,7 @@ public class AuthenticationActivity extends AppCompatActivity implements EmailPa
 
 
         //to be updated
-        intent =new Intent(AuthenticationActivity.this, ChatActivity.class);
+        intent =new Intent(AuthenticationActivity.this, ContactsActivity.class);
         intent.putExtra("name",currentUser.getEmail());
         startActivity(intent);
     }
