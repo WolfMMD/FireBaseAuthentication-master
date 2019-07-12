@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/message"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:textSize="20sp"
+            tools:text="message"
+            android:background="@drawable/chat_message_bubble"
+            android:padding="12dp"
+            android:backgroundTint="@color/com_facebook_button_login_silver_background_color_pressed"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            tools:text="12:00 pm"
+            android:textSize="16sp"
+            android:paddingStart="12dp"
+            />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

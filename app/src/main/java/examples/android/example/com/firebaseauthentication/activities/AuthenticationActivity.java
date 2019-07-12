@@ -1,229 +1,303 @@
 package examples.android.example.com.firebaseauthentication.activities;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Patterns;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 
 import examples.android.example.com.firebaseauthentication.R;
-import examples.android.example.com.firebaseauthentication.activities.chatting.ContactsActivity;
 import examples.android.example.com.firebaseauthentication.databinding.AuthenticationBinding;
-import examples.android.example.com.firebaseauthentication.interfaces.EmailPasswordContract;
-import examples.android.example.com.firebaseauthentication.presenters.EmailPasswordPresenter;
+import examples.android.example.com.firebaseauthentication.interfaces.AuthenticationInterface;
+import examples.android.example.com.firebaseauthentication.data.Constants;
+import examples.android.example.com.firebaseauthentication.presenters.AuthenticationPresenter;
 
-public class AuthenticationActivity extends AppCompatActivity implements EmailPasswordContract.View {
+public class AuthenticationActivity extends AppCompatActivity implements AuthenticationInterface.View {
 
     AuthenticationBinding authBinding;
+    AuthenticationInterface.Presenter presenter;
+
+    ProgressDialog dialog;
+    AlertDialog.Builder alertDialogBuilder;
+
     Intent intent;
-    EmailPasswordContract.Presenter presenter;
-
-    //for Email and Pass
-    String email, password,fullName;
+    String email, password;
+    private static int RC_SIGN_IN = 123;
 
 
-    //for FB
+    GoogleSignInOptions gso;
+    //
     CallbackManager callbackManager;
 
-    //google
-    private static int RC_SIGN_IN=123;
-    GoogleSignInOptions gso;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         authBinding = DataBindingUtil.setContentView(this, R.layout.authentication);
 
-        callbackManager = CallbackManager.Factory.create();
+        presenter = new AuthenticationPresenter(this);
 
-        presenter = new EmailPasswordPresenter(this,callbackManager);
-
-        //FB
-      //  authBinding.facebookLoginButton.setReadPermissions("email");
-
-        authBinding.facebookLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                presenter.registerCallback();
-            }
-        });
-
-
-        //email
         initView();
+        initProgressDialog();
+
         initSignIn();
         initSignUp();
         initResetPassword();
 
-        initSignInButton();
+        initGoogleSignInOptions();
+        initGoogleSignIn();
 
-        //Google
-        final GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        initFacebookLogin();
+        initPhoneSignIn();
 
-        authBinding.signUpWithGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        //?
+        //onEditTextChanged();
 
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-
-            }
-        });
 
     }
 
-    public void initSignInButton(){
+
+//    public void onEditTextChanged() {
+//
+//
+//        authBinding.email.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                authBinding.email.setText(" ");
+//                authBinding.emailFeedbackMsg.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//
+//
+//        authBinding.password.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                authBinding.password.setText(" ");
+//                authBinding.passFeedbackMsg.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//    }
+
+
+
+    public void initView() {
+        alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setPositiveButton(R.string.ok, null);
+        authBinding.forgetPassword.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        authBinding.signUp.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+    }
+
+    private void initProgressDialog(){
+        dialog= new ProgressDialog(this);
+        dialog.setMessage(getString(R.string.signInProgressDialog));
+    }
+
+    public void initSignIn() {
+
+        authBinding.signIn.setOnClickListener(v -> {
+            email = authBinding.email.getText().toString();
+            password = authBinding.password.getText().toString();
+
+            boolean isValid = true;
+
+            if (!presenter.validateEmail(email))
+                isValid = false;
+
+            if (!presenter.validatePassword(password))
+                isValid = false;
+
+            if (isValid)
+            presenter.callSignIn(email, password);
+        });
+    }
+
+    public void initSignUp() {
+
+        authBinding.signUp.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    public void initResetPassword() {
+
+        authBinding.forgetPassword.setOnClickListener(v -> {
+            email = authBinding.email.getText().toString();
+
+            boolean isValid = true;
+            if (!presenter.validateEmail(email))
+                isValid = false;
+
+            if (isValid)
+            presenter.callResetPassword(email);
+        });
+    }
+
+    public void initGoogleSignInOptions() {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestIdToken("994131237640-4vjdq2uh90k018l3n778miqb5ickfd1f.apps.googleusercontent.com")
+                .requestIdToken(Constants.idToken)
                 .build();
     }
+
+    private void initGoogleSignIn(){
+
+        authBinding.signUpWithGoogle.setOnClickListener(v -> {
+            final GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        });
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-
-
         if (requestCode == RC_SIGN_IN) {
-
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
-            // Google Sign In was successful, authenticate with Firebase
             GoogleSignInAccount account = task.getResult();
-
-            presenter.firebaseAuthWithGoogle(account);
-
-
-
-
+            presenter.callFireBaseAuthWithGoogle(account);
         }
+
+        //callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
-    @Override
-    protected void onStart(){
-        super.onStart();
+    private void initFacebookLogin(){
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account !=null){
-            Toast.makeText(getApplicationContext(),"you are already signed in",Toast.LENGTH_LONG).show();
-        }
-    }
+        authBinding.facebookLoginButton.setOnClickListener(v -> {
 
-    public void initView(){
-
-        authBinding.forgetPassword.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        authBinding.signUp.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-
-    }
-
-    public void initSignIn() {
-
-        authBinding.signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                email = authBinding.email.getText().toString();
-                password = authBinding.password.getText().toString();
+           // LoginButton loginButton=new LoginButton()
 
 
-                if (!email.trim().isEmpty() && !password.trim().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-
-                    presenter.callSignIn(email, password);
-
-
-                } else {
-
-                    setToastMessage("Please fill the required fields");
-                }
-
-            }
         });
+//        //authBinding.facebookLoginButton.setReadPermissions("email");
+//        authBinding.facebookLoginButton.setOnClickListener(v ->
+//                presenter.callRegisterCallback());
 
     }
 
+    private void initPhoneSignIn(){
 
-    public void initSignUp() {
-
-        authBinding.signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                email = authBinding.email.getText().toString();
-                password = authBinding.password.getText().toString();
-                fullName= authBinding.fullName.getText().toString();
-
-                if (!email.trim().isEmpty() && !password.trim().isEmpty() && !fullName.trim().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-
-                    presenter.callSignUp(email, password,fullName);
-
-                } else
-
-                    setToastMessage("Please fill the required fields");
-            }
+        authBinding.phoneSignIn.setOnClickListener(v -> {
+            Intent intent = new Intent(this,PhoneActivity.class);
+            startActivity(intent);
         });
     }
 
-
-    public void initResetPassword(){
-
-
-        authBinding.forgetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                email = authBinding.email.getText().toString();
-
-                if(!(email.isEmpty()) && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+    //?
+    @Override
+    public void setCallbackManager(CallbackManager callbackManager) {
+        this.callbackManager=callbackManager;
+    }
 
 
-                    presenter.callResetPassword(email);
-                }
 
+    //done
 
-                else{
-
-                    setToastMessage("Please make sure you're using a valid email address");
-                }
-
-            }
-        });
+    @Override
+    public void showProgressDialog() {
+        dialog.show();
     }
 
     @Override
-    public void setToastMessage(String message) {
-
-        Toast.makeText(getApplicationContext(), message, 2 * Toast.LENGTH_LONG).show();
-
-
+    public void dismissProgressDialog() {
+        dialog.dismiss();
     }
 
     @Override
-    public void whenSignedIn(FirebaseUser currentUser) {
-
-
-        //to be updated
-        intent =new Intent(AuthenticationActivity.this, ContactsActivity.class);
-        intent.putExtra("name",currentUser.getEmail());
+    public void signedInSuccessfully() {
+        intent = new Intent(AuthenticationActivity.this, ContactsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void signedInFailed() {
+        alertDialogBuilder.setMessage(getString(R.string.signInFailed));
+        alertDialogBuilder.show();
+    }
+
+    @Override
+    public void verifyAccount() {
+        alertDialogBuilder.setMessage(getString(R.string.verifyAccountMsg));
+        alertDialogBuilder.show();
+    }
+
+    @Override
+    public void resetEmailSent() {
+        alertDialogBuilder.setMessage(getString(R.string.resetEmailSent));
+        alertDialogBuilder.show();
+    }
+
+    @Override
+    public void resetEmailFailed() {
+        alertDialogBuilder.setMessage(getString(R.string.resetEmailFailed));
+        alertDialogBuilder.show();
+    }
+
+    @Override
+    public void emailValid() {
+        authBinding.email.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_done_black_24dp, 0);
+        authBinding.emailFeedbackMsg.setText(" ");
+    }
+
+    @Override
+    public void emailInvalid(String feedback) {
+        authBinding.email.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_info_outline_black_24dp, 0);
+        authBinding.emailFeedbackMsg.setText(feedback);
+    }
+
+    @Override
+    public void passwordValid() {
+        authBinding.password.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_done_black_24dp, 0);
+        authBinding.passFeedbackMsg.setText(" ");
+
+    }
+
+    @Override
+    public void passwordInvalid(String feedback) {
+        authBinding.password.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_info_outline_black_24dp, 0);
+        authBinding.passFeedbackMsg.setText(feedback);
     }
 
 

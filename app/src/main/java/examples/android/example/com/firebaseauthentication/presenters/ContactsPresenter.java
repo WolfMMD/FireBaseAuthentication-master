@@ -1,77 +1,72 @@
 package examples.android.example.com.firebaseauthentication.presenters;
 
-import android.support.annotation.NonNull;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
+import android.util.Log;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
+import examples.android.example.com.firebaseauthentication.data.UserData;
 import examples.android.example.com.firebaseauthentication.interfaces.ContactsInterface;
 import examples.android.example.com.firebaseauthentication.models.ContactsModel;
-import examples.android.example.com.firebaseauthentication.models.UserData;
 
 public class ContactsPresenter implements ContactsInterface.Presenter {
 
-    private FirebaseAuth auth= FirebaseAuth.getInstance();
+
     private ContactsInterface.View view;
     private ContactsInterface.Model model;
     private List<UserData> userDataList = new ArrayList<>();
 
 
    public ContactsPresenter(ContactsInterface.View view){
-
         this.view=view;
         model=new ContactsModel();
-
     }
 
 
     @Override
     public void callGetAllUsers() {
 
-        ValueEventListener valueEventListener=new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        OnCompleteListener<QuerySnapshot> onCompleteListener= task -> {
 
-                for (DataSnapshot item : dataSnapshot.getChildren()) {
+            if (task.isSuccessful() && task.getResult()!=null) {
 
-                    for(DataSnapshot userData: item.getChildren()){
+                for (QueryDocumentSnapshot document : task.getResult()) {
 
-                        UserData data =userData.getValue(UserData.class);
+                    Map<String, Object> user =document.getData();
 
-                        userDataList.add(data);
-                    }
-
+                    user.get("fullName");
+                    UserData userData= new UserData();
+                    userData.setFullName(user.get("fullName").toString());
+                    userData.setUserId(document.getId());
+                    userDataList.add(userData);
                 }
 
                 view.setAllUsers(userDataList);
 
-
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            else {
 
-                System.out.println("%%"+databaseError.getMessage());
-
+                 Log.d("error", "Error getting documents: ", task.getException());
             }
+
+
         };
 
-        model.getAllUsers(valueEventListener);
 
-       // view.setAllUsers(userDataList);
-
-
-    }
-
-    @Override
-    public void callAddUserToChat(UserData userData) {
-
+        model.getAllUsers(onCompleteListener);
 
 
     }
+
+//    @Override
+//    public void callAddUserToChat(UserData userData) {
+//
+//       model.addUserToChat(userData);
+//       view.whenConversationStarts(model.getCurrentUser(),userData);
+//
+//
+//    }
 }

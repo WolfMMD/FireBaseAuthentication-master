@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ActivityBackgroundColor"
+            tools:context=".activities.SignUpActivity">
+
+                <TextView
+                    android:id="@+id/fullNameLabel"
+                    style="@style/label"
+                    android:layout_marginTop="150dp"
+                    android:text="@string/fullNameLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <EditText
+                    android:id="@+id/fullName"
+                    style="@style/editText"
+                    android:layout_marginTop="8dp"
+                    android:inputType="textPersonName"
+                    app:layout_constraintEnd_toEndOf="@id/fullName"
+                    app:layout_constraintStart_toStartOf="@id/fullName"
+                    app:layout_constraintTop_toBottomOf="@id/fullNameLabel" />
+
+
+                <TextView
+                    android:id="@+id/fullNameFeedbackMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/fullName"
+                    app:layout_constraintTop_toBottomOf="@id/fullName"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/com_facebook_messenger_blue"
+
+                    />
+
+                <TextView
+                    android:id="@+id/emailLabel"
+                    style="@style/label"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/Email"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fullNameFeedbackMsg" />
+
+                <EditText
+                    android:id="@+id/email"
+                    style="@style/editText"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:inputType="textEmailAddress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emailLabel" />
+
+                <TextView
+                    android:id="@+id/emailFeedbackMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/email"
+                    app:layout_constraintTop_toBottomOf="@id/email"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/com_facebook_messenger_blue"
+
+                    />
+
+
+                <TextView
+                    android:id="@+id/passwordLabel"
+                    style="@style/label"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/Password"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emailFeedbackMsg" />
+
+                <EditText
+                    android:id="@+id/password"
+                    style="@style/editText"
+                    android:layout_marginTop="8dp"
+                    android:inputType="textPassword"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/passwordLabel" />
+
+                <TextView
+                    android:id="@+id/passFeedbackMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/password"
+                    app:layout_constraintTop_toBottomOf="@id/password"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/com_facebook_messenger_blue"
+
+                    />
+
+
+                <Button
+                    android:id="@+id/signUp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="60dp"
+                    android:text="@string/signUp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/password"
+                    android:background="@color/orange"/>
+
+
+
+</android.support.constraint.ConstraintLayout>
+
+</layout>

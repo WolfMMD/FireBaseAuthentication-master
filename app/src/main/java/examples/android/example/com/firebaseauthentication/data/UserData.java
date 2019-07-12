@@ -1,4 +1,4 @@
-package examples.android.example.com.firebaseauthentication.models;
+package examples.android.example.com.firebaseauthentication.data;
 
 public class UserData {
 

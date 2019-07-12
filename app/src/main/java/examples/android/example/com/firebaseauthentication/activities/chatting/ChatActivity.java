@@ -2,99 +2,78 @@ package examples.android.example.com.firebaseauthentication.activities.chatting;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import examples.android.example.com.firebaseauthentication.R;
+import examples.android.example.com.firebaseauthentication.data.Message;
 import examples.android.example.com.firebaseauthentication.databinding.ChatLayoutBinding;
+import examples.android.example.com.firebaseauthentication.interfaces.ChatInterface;
+import examples.android.example.com.firebaseauthentication.presenters.ChatPresenter;
 
 
-public class ChatActivity extends AppCompatActivity implements ActivityCallback {
+public class ChatActivity extends AppCompatActivity implements ChatInterface.View {
 
-    private DatabaseReference mDatabase;
-    private ChatAdapter chatAdapter;
     private ChatLayoutBinding chatLayoutBinding;
-    private ChatData data;
-    private List<ChatData> conversation= new ArrayList<>();
+    public String partnerID;
+    public String partnerName;
+    private ChatInterface.Presenter presenter;
 
-    private String name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         chatLayoutBinding = DataBindingUtil.setContentView(this, R.layout.chat_layout);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://fir-auth-36aac.firebaseio.com/");
-        mDatabase = database.getReference();
+        initRecyclerView();
+        initIntentData();
+        initSendMessageButton();
+        presenter=new ChatPresenter(this);
+        presenter.callGetChatMessages(partnerID);
+
+
+
+    }
+
+    public void initIntentData(){
+        partnerID =getIntent().getStringExtra("partnerID");
+        partnerName =getIntent().getStringExtra("partnerName");
+       // currentUser =getIntent().getParcelableExtra("current user");
+    }
+
+    public void initRecyclerView(){
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         chatLayoutBinding.messagesView.setLayoutManager(linearLayoutManager);
+    }
 
-        name=getIntent().getStringExtra("name");
+    public void initSendMessageButton(){
 
+        chatLayoutBinding.actionImage.setOnClickListener(v -> {
 
-
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                Toast.makeText(getApplicationContext(), "CHAT SUCCESS!", Toast.LENGTH_LONG).show();
-
-                conversation=new ArrayList<>();
-
-                for (DataSnapshot item : dataSnapshot.getChildren()) {
-                    ChatData data = item.getValue(ChatData.class);
-                    conversation.add(data);
-                }
-
-                chatAdapter=new ChatAdapter(conversation);
-                chatAdapter.notifyDataSetChanged();
-                chatLayoutBinding.messagesView.setAdapter(chatAdapter);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        chatLayoutBinding.actionImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                data = new ChatData();
-                data.setMessage(chatLayoutBinding.editText.getText().toString());
-//                data.setId("userId");
-                data.setName(name);
+            String messageBody=chatLayoutBinding.editText.getText().toString();
+            if(!messageBody.isEmpty()){
                 chatLayoutBinding.editText.setText(" ");
-
-                //add chats to DB
-                mDatabase.child("chats").child("messages").child(String.valueOf(new Date().getTime())).setValue(data);
-
+                presenter.callAddMessageToDB(messageBody,partnerID);
             }
+
         });
     }
 
+    @Override
+    public void setChatMessages(List<Message> chatMessages) {
 
+        ChatAdapter chatAdapter = new ChatAdapter(chatMessages);
+        chatLayoutBinding.messagesView.setAdapter(chatAdapter);
+
+    }
+
+    //
+//    @Override
+//    public void messageAddedSuccessfullyToChat() {
+//
+//    }
 
 }

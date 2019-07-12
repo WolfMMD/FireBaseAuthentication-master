@@ -1,37 +1,59 @@
 package examples.android.example.com.firebaseauthentication.models;
 
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import examples.android.example.com.firebaseauthentication.interfaces.ContactsInterface;
 
 public class ContactsModel implements ContactsInterface.Model {
 
-
-    private DatabaseReference mDatabase;
+    private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    //private FirebaseUser currentUser;
 
     public ContactsModel(){
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://fir-auth-36aac.firebaseio.com/");
-        mDatabase = database.getReference();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        //currentUser= auth.getCurrentUser();
     }
 
     @Override
-    public void getAllUsers(ValueEventListener valueEventListener) {
+    public void getAllUsers(OnCompleteListener<QuerySnapshot> onCompleteListener) {
 
-        mDatabase.addValueEventListener(valueEventListener);
+        db.collection("users").get().addOnCompleteListener(onCompleteListener);
 
-    }
-
-    @Override
-    public void addUserToChat(UserData userData) {
-
-        //add user's name to contacts of the current user
-        //add chat to DB that contains message each message have a sender, body and time
 
     }
+
+//    @Override
+//    public void addUserToChat(final UserData userData) {
+//
+//        Date date= new Date();
+//        Timestamp ts = new Timestamp(date);
+//
+//        Map<String,Object> message=new HashMap<>();
+//        message.put("sender",currentUser.getUid()); //take msg from editText
+//        message.put("time",ts);
+//        message.put("body",)
+////
+//
+//        //?????????????????????????????
+//        // the message should be added to msgs not update
+//
+//        DocumentReference addAnotherMessageRef = db.collection("chats")
+//                .document(currentUser.getUid()+"_"+userData.getUserId())
+//                .collection("msgs").document();
+//
+////        Map<String,Object> newMessage=new HashMap<>();
+////       addAnotherMessageRef.update("msgs",FieldValue.arrayUnion(newMessage));
+////
+//
+//    }
+
+//    @Override
+//    public FirebaseUser getCurrentUser() {
+//        return currentUser;
+//    }
+
 
 }

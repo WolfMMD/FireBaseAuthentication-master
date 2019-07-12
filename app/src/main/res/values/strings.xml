@@ -4,4 +4,25 @@
     <string name="fb_login_protocol_scheme">fb2271203902917456</string>
     <string name="input_placeholder">Write a message</string>
 
+    <string name="fullNameLabel">Full Name</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="signUp">Sign Up</string>
+    <string name="OR">OR</string>
+    <string name="signIn">Sign In</string>
+    <string name="creatAccount">Create an Account</string>
+    <string name="forgetPass">forget your password?</string>
+    <string name="ok">OK</string>
+
+
+    <string name="signUpProgressDialog">Creating Account</string>
+    <string name="signUpSuccessfully">Account Created Successfully. A verification E-mail will be sent to your E-mail address</string>
+    <string name="signUpError"> Error in Creating account"</string>
+    <string name="verifyAccountMsg">Please check your E-mail to verify your account</string>
+    <string name="verifyAccountFailed">We seem to have a problem sending you a verification E-mail</string>
+    <string name="signInProgressDialog">Signing In</string>
+    <string name="signInFailed">Failed to sign in</string>
+    <string name="resetEmailSent"> Password reset E-mail has been sent</string>
+    <string name="resetEmailFailed">Error in Reset Password, Please make sure you are using a valid email address</string>
+
 </resources>
