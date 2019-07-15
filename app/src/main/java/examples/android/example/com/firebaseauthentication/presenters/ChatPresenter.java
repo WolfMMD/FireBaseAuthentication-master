@@ -37,9 +37,10 @@ public class ChatPresenter implements ChatInterface.Presenter {
     }
 
     @Override
-    public void callSetChatMessage(List<Message> chatMessages) {
+    public void onMessagesReceived(List<Message> chatMessages) {
 
         view.setChatMessages(chatMessages);
     }
+
 
 }

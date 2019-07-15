@@ -20,5 +20,6 @@ public  class TextWatcherCustomListener implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
 
+
     }
 }

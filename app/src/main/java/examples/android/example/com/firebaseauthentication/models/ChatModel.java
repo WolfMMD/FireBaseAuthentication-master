@@ -1,112 +1,158 @@
 package examples.android.example.com.firebaseauthentication.models;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import examples.android.example.com.firebaseauthentication.data.Message;
 import examples.android.example.com.firebaseauthentication.interfaces.ChatInterface;
 
 
 public class ChatModel implements ChatInterface.Model {
 
-    private FirebaseAuth auth=FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseUser currentUser=auth.getCurrentUser();
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private String documentId;
     private ChatInterface.Presenter presenter;
+    private List<Message> typedMessageList = new ArrayList<>();
+    private boolean isChatExisted;
 
-    private List<Message>mdlIst=new ArrayList<>();
 
+    public ChatModel(ChatInterface.Presenter presenter) {
 
-
-    public ChatModel(ChatInterface.Presenter presenter){
-
-        this.presenter=presenter;
+        this.presenter = presenter;
     }
 
     @Override
     public void getChatMessages(String partnerID) {
 
 
+        db.collection("chats").document(partnerID + "_" + currentUser.getUid()).get().addOnCompleteListener(task -> {
 
-        db.collection("chats").document(currentUser.getUid()+"_"+partnerID).get().addOnCompleteListener(task -> {
-
-            if (task.isSuccessful()){
+            if (task.isSuccessful()) {
 
 
-                DocumentSnapshot document = task.getResult();
+                if (task.getResult() != null && (task.getResult().exists())) {
 
-                if(document!=null && document.exists()){
+                    //get messages from msgs sub-collection
+                    documentId = task.getResult().getId();
+                    db.collection("chats").document(documentId).collection("msgs").orderBy("time").addSnapshotListener(getOnEventListener());
 
-                    documentId= task.getResult().getId();
+                } else {
 
-                    db.collection("chats")
-                            .document(documentId)
-                            .collection("msgs").orderBy("time").get().addOnCompleteListener(getOnCompleteListener());
+                    documentId = currentUser.getUid() + "_" + partnerID;
+
+                    db.collection("chats").document(documentId).get().addOnCompleteListener(task1 -> {
+
+                        if (task.isSuccessful()) {
+
+                            if (task.getResult() != null && task.getResult().exists()) {
+                                documentId = task.getResult().getId();
+
+//                                db.collection("chats").document(documentId).collection("msgs").orderBy("time").addSnapshotListener(getOnEventListener());
+
+                            } else {
+
+//                                //sender_receiver chat and receiver_sender chat not existed
+
+                                   isChatExisted=false;
+
+
+//                                Date date = new Date();
+//                                Timestamp ts = new Timestamp(date);
+//
+//                                Map<String, Object> firstChat = new HashMap<>();
+//                                firstChat.put("createdAt", ts);
+//                                db.collection("chats").document(documentId).set(firstChat);
+                            }
+
+                            db.collection("chats").document(documentId).collection("msgs").orderBy("time").addSnapshotListener(getOnEventListener());
+
+
+
+                        }
+
+
+                    });
+
                 }
 
-                else{
 
-                    documentId= partnerID+"_"+currentUser.getUid();
+            } //task successful
 
-                    db.collection("chats")
-                            .document(documentId)
-                            .collection("msgs").orderBy("time").get().addOnCompleteListener(getOnCompleteListener());
-                }
-
-
-            }
-
-            else {
-
-                Log.d("^^","Data retrieved failed");
-            }
         });
 
     }
 
-    private OnCompleteListener<QuerySnapshot> getOnCompleteListener() {
+    private EventListener<QuerySnapshot> getOnEventListener() {
 
-        List<Message> typedMessageList=new ArrayList<>();
 
-        return task -> {
 
-            if (task.getResult() !=null) {
 
-                for(Message message: task.getResult().toObjects(Message.class)){
+        return (queryDocumentSnapshots, e) -> {
 
-                    if(message.getSender().equals(currentUser.getUid())){
+            if (e != null) {
+                Log.w("falied", "Listen failed.", e);
+                return;
+            }
+
+
+            if (queryDocumentSnapshots != null) {
+                // Log.d(TAG, "Current data: " + snapshot.getData());
+
+
+
+                List<DocumentChange> newestMessages = queryDocumentSnapshots.getDocumentChanges();
+                for (DocumentChange messageChange : newestMessages) {
+
+                    Message message = messageChange.getDocument().toObject(Message.class);
+                    if (message.getSender().equals(currentUser.getUid())) {
                         message.setType(0);
 
-                    }
-
-                    else {
+                    } else {
                         message.setType(1);
 
                     }
                     typedMessageList.add(message);
                 }
-                presenter.callSetChatMessage(typedMessageList);
+                presenter.onMessagesReceived(typedMessageList);
+
+            } else {
+
+
+                Log.d("error", "Current data: null");
             }
 
+
         };
+
     }
 
+
     @Override
-    public void addMessageToDB(String messageBody,String partnerID) {
+    public void addMessageToDB(String messageBody, String partnerID) {
+
+        if(!isChatExisted){
+            Date date = new Date();
+            Timestamp ts = new Timestamp(date);
+
+            Map<String, Object> firstChat = new HashMap<>();
+            firstChat.put("createdAt", ts);
+            db.collection("chats").document(documentId).set(firstChat);
+        }
 
 
         Date date = new Date();
@@ -125,4 +171,5 @@ public class ChatModel implements ChatInterface.Model {
     }
 
 }
+
 

@@ -18,7 +18,8 @@
             android:layout_marginTop="8dp"
             android:textSize="20sp"
             tools:text="message"
-            android:padding="12dp"/>
+            android:padding="12dp"
+            android:backgroundTint="@color/com_facebook_button_login_silver_background_color_pressed" />
 
         <TextView
             android:id="@+id/time"
@@ -27,10 +28,10 @@
             app:layout_constraintEnd_toEndOf="@id/message"
             app:layout_constraintTop_toBottomOf="@id/message"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             tools:text="12:00 pm"
             android:textSize="16sp"
-            android:paddingEnd="12dp"
+
+            android:layout_marginBottom="8dp"
             />
 
 

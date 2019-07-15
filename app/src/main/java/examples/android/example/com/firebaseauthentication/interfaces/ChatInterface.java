@@ -18,7 +18,7 @@ public interface ChatInterface {
     interface Presenter{
         void callGetChatMessages(String partnerID);
         void callAddMessageToDB(String messageBody,String partnerID);
-        void callSetChatMessage(List<Message> chatMessages);
+        void onMessagesReceived(List<Message> chatMessages);
     }
 
 

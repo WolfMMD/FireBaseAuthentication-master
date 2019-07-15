@@ -18,8 +18,7 @@
             tools:text="message"
             android:background="@drawable/chat_message_bubble"
             android:padding="12dp"
-            android:backgroundTint="@color/com_facebook_button_login_silver_background_color_pressed"/>
-
+/>
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"

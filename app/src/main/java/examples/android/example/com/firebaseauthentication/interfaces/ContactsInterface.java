@@ -12,22 +12,20 @@ public interface ContactsInterface {
 
     interface View{
 
-        void setAllUsers(List<UserData> userNames);
-        //void whenConversationStarts(FirebaseUser currentUser, UserData userData);
+        void setAllUsers(List<UserData> users);
+        void notifyAdapter();
     }
 
     interface Presenter
     {
-        void callGetAllUsers();
-       // void callAddUserToChat(UserData userData);
+        void callGetSearchedOnUsers(String searchOn);
 
     }
 
     interface Model
     {
-        void getAllUsers(OnCompleteListener<QuerySnapshot> onCompleteListener);
-       // void addUserToChat(UserData userData);
-       // FirebaseUser getCurrentUser();
+        void getSearchedOnData(String searchedOn,OnCompleteListener<QuerySnapshot> onCompleteListener);
+
     }
 
 

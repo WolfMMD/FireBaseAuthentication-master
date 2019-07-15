@@ -1,80 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="chatInfo"
-            type="examples.android.example.com.firebaseauthentication.activities.chatting.ChatActivity" />
-    </data>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
 
-    android:clipToPadding="false"
-    android:focusableInTouchMode="true"
-    tools:context=".activities.chatting.ChatActivity"
-    android:background="@color/cardview_light_background">
-
-    <TextView
-        android:id="@+id/partnerName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="MY NAME"
-        android:layout_marginTop="16dp"
-        android:text="@{chatInfo.partnerName}"
-        android:textSize="16sp"
-        android:textColor="@color/cardview_light_background"
-        android:background="@color/com_facebook_blue"
-        />
-
-    <android.support.v7.widget.RecyclerView
-
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:id="@+id/messages_view"
-        android:layout_weight="2"
-        android:divider="#fff"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/partnerName"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_height="match_parent"
+        android:background="@color/cardview_light_background"
+        tools:context=".activities.chatting.ChatActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:orientation="horizontal"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp">
-
-        <EditText
-            android:id="@+id/editText"
+        <Toolbar
+            android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:hint="Write a message"
-            android:inputType="text"
-            android:paddingHorizontal="10dp"
-            android:text="" />
+            android:layout_height="60dp"
+            android:background="#ffffdf"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/action_image"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/partnerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/orange"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Partner Name" />
+
+        </Toolbar>
+
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/chatMessagesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@id/chatLinearLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolBar">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+        <LinearLayout
+            android:id="@+id/chatLinearLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            android:padding="20dp"
-            android:layout_marginHorizontal="10dp"
-            android:background="@drawable/ic_send_black_24dp"
-            android:clickable="true"
-            />
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Enter message"
+                android:maxLines="6"
+                android:minHeight="46dp" />
+
+            <ImageButton
+                android:id="@+id/sendMessageIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/ic_send_black_24dp"
+                android:backgroundTint="@color/orange"
+                android:clickable="true"
+                android:padding="20dp"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
 
 </layout>

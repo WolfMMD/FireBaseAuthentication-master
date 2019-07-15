@@ -10,7 +10,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mychat">
+    android:background="@color/ActivityBackgroundColor">
 
     <TextView
         android:id="@+id/PhoneLabel"
@@ -19,7 +19,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="32dp"
         android:text="Phone Number"
-        android:textColor="@android:color/background_dark"
+        android:textColor="@color/orange"
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,6 +50,8 @@
         app:layout_constraintTop_toBottomOf="@id/phoneNumber"
         android:layout_marginTop="16dp"
         android:text="Sign In"
+        android:background="@color/orange"
+        android:textColor="@android:color/white"
        />
 
 </android.support.constraint.ConstraintLayout>
