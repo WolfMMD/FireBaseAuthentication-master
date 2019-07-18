@@ -21,7 +21,7 @@ public class ChatListActivity extends AppCompatActivity implements ChatListInter
 
         ChatListPresenter presenter=new ChatListPresenter(this);
 
-        presenter.callGetAllUserChats();
+        presenter.getChat();
 
     }
 

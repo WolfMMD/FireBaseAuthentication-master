@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
 import examples.android.example.com.firebaseauthentication.R;
 import examples.android.example.com.firebaseauthentication.databinding.SignUpActivityBinding;
 import examples.android.example.com.firebaseauthentication.interfaces.SignUpInterface;

@@ -16,6 +16,7 @@
             android:layout_marginTop="8dp"
             android:textSize="20sp"
             tools:text="message"
+            android:textColor="#FFF"
             android:background="@drawable/chat_message_bubble"
             android:padding="12dp"
 />

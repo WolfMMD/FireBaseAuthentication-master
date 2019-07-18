@@ -13,6 +13,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import examples.android.example.com.firebaseauthentication.aAMessagingTestPckg.UsersManager;
 import examples.android.example.com.firebaseauthentication.interfaces.AuthenticationInterface;
 import examples.android.example.com.firebaseauthentication.models.AuthenticationModel;
 import examples.android.example.com.firebaseauthentication.data.Constants;
@@ -43,13 +45,20 @@ public class AuthenticationPresenter implements AuthenticationInterface.Presente
 
                 if (task.isSuccessful()) {
 
-                    if (model.isVerified())
+                    if (model.isVerified()){
+
                         view.signedInSuccessfully();
+                        UsersManager.getInstance().updateUserToken(UsersManager.getInstance().getUserToken());
+
+                    }
+
+
 
                      else
                         view.verifyAccount();
                         //for testing chat don't block unverified users to enter chat
                         view.signedInSuccessfully();
+                        UsersManager.getInstance().updateUserToken(UsersManager.getInstance().getUserToken());
 
                 }
                 else

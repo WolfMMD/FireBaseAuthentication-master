@@ -20,18 +20,18 @@ import examples.android.example.com.firebaseauthentication.interfaces.ContactsIn
 
 public class ContactsModel implements ContactsInterface.Model {
 
-    private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public ContactsModel(){
+    public ContactsModel() {
 
     }
 
     @Override
     public void getSearchedOnData(String searchedOn, OnCompleteListener<QuerySnapshot> onCompleteListener) {
 
-         CollectionReference reference = db.collection("users");
+        CollectionReference reference = db.collection("users");
 
-       Query q = reference.orderBy("fullName").startAt(searchedOn.trim()).endAt(searchedOn.trim() + "\uf8ff");
+        Query q = reference.orderBy("fullName").startAt(searchedOn.trim()).endAt(searchedOn.trim() + "\uf8ff");
 
         q.get().addOnCompleteListener(onCompleteListener);
 

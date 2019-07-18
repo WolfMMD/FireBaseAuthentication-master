@@ -1,5 +1,7 @@
 package examples.android.example.com.firebaseauthentication.presenters;
 
+import android.net.Uri;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -25,7 +27,7 @@ public class ChatPresenter implements ChatInterface.Presenter {
 
 
     @Override
-    public void callGetChatMessages(String partnerID) {
+    public void getMessagesFor(String partnerID) {
 
         model.getChatMessages(partnerID);
     }
@@ -40,6 +42,11 @@ public class ChatPresenter implements ChatInterface.Presenter {
     public void onMessagesReceived(List<Message> chatMessages) {
 
         view.setChatMessages(chatMessages);
+    }
+
+    @Override
+    public void callAddImageToDB(Uri selectedImageUri) {
+        model.addImageToDB(selectedImageUri);
     }
 
 

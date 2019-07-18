@@ -58,15 +58,18 @@ public class AuthenticationModel implements AuthenticationInterface.Model {
     @Override
     public void addFBGUserToDataBase() {
 
-        Map<String, Object> user = new HashMap<>();
-        if (currentUser.getDisplayName() != null)
-            user.put("fullName", currentUser.getDisplayName());
-        if (currentUser.getEmail() != null)
-            user.put("email", currentUser.getEmail());
+        if(currentUser!=null) {
+            Map<String, Object> user = new HashMap<>();
+            if (currentUser.getDisplayName() != null)
+                user.put("fullName", currentUser.getDisplayName());
+            if (currentUser.getEmail() != null)
+                user.put("email", currentUser.getEmail());
 
-        db.collection("users").document(currentUser.getUid()).set(user)
-                .addOnSuccessListener(documentReference -> Log.d("success", "user added to Firestore"))
-                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+            db.collection("users").document(currentUser.getUid()).set(user)
+                    .addOnSuccessListener(documentReference -> Log.d("success", "user added to Firestore"))
+                    .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+
+        }
 
     }
 

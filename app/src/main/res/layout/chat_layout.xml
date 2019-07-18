@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cardview_light_background"
-        tools:context=".activities.chatting.ChatActivity">
+        tools:context=".activities.ChatActivity">
 
         <Toolbar
             android:id="@+id/toolBar"
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@id/chatLinearLayout"
+            app:layout_constraintBottom_toTopOf="@id/editText"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolBar">
@@ -46,41 +46,65 @@
         </android.support.v7.widget.RecyclerView>
 
 
-        <LinearLayout
-            android:id="@+id/chatLinearLayout"
+        <!--<LinearLayout-->
+        <!--android:id="@+id/chatLinearLayout"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="#ffffff"-->
+        <!--android:orientation="horizontal"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent">-->
+
+        <EditText
+            android:id="@+id/editText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/transparent"
+            android:hint="  Enter message"
+            android:maxLines="6"
+            android:minHeight="46dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintEnd_toStartOf="@id/sendPic"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:hint="Enter message"
-                android:maxLines="6"
-                android:minHeight="46dp" />
+        <ImageButton
+            android:id="@+id/sendPic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_image_black_24dp"
+            android:backgroundTint="@color/orange"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="20dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sendMessageIcon"
+            app:layout_constraintStart_toEndOf="@id/editText"
 
-            <ImageButton
-                android:id="@+id/sendMessageIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="10dp"
-                android:background="@drawable/ic_send_black_24dp"
-                android:backgroundTint="@color/orange"
-                android:clickable="true"
-                android:padding="20dp"
-                android:scaleType="fitCenter" />
-        </LinearLayout>
+
+            />
+
+        <ImageButton
+            android:id="@+id/sendMessageIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_send_black_24dp"
+            android:backgroundTint="@color/orange"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="20dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/sendPic" />
+        <!--</LinearLayout>-->
 
 
     </android.support.constraint.ConstraintLayout>

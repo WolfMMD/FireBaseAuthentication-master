@@ -2,7 +2,7 @@ package examples.android.example.com.firebaseauthentication.data;
 
 public class Constants {
 
-    public static String verifyAccountMsg="Please check your E-mail to verify your account";
+    public static final String VERIFY_ACCOUNT_MSG="Please check your E-mail to verify your account";
     public static String verificationEmailFailed ="We seem to have a problem sending you a verification E-mail";
 
     public static String onCompleteSignUpSuccessfully ="Account Created Successfully. A verification E-mail will be sent to your E-mail address";

@@ -6,18 +6,19 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 public interface PhoneInterface {
 
-    interface View{
+    interface View {
         void signedInSuccessfully();
-        void setCallback( PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback);
-    }
-    interface Model{
-        void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential, OnCompleteListener onCompleteListener);
 
+        void setCallback(PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback);
     }
-    interface Presenter{
+
+    interface Presenter {
 
         void callPhoneSignIn(String phone);
+    }
 
+    interface Model {
+        void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential, OnCompleteListener onCompleteListener);
 
     }
 }

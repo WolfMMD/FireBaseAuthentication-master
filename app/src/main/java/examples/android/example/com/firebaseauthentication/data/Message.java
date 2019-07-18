@@ -13,8 +13,10 @@ public class Message {
     private String sender;
     @PropertyName("time")
     private Timestamp time;
-
+    @PropertyName("type")
     private int type;
+
+    private int senderOrReceiverType;
 
     public Message(){
 
@@ -25,32 +27,25 @@ public class Message {
         return messageBody;
     }
 
-    @PropertyName("body")
-    public void setMessageBody(String messageBody) {
-        this.messageBody = messageBody;
-    }
 
-    public String getSender() {
-        return sender;
-    }
+    public String getSender() {return sender;}
 
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
+    public Timestamp getTime() {return time;}
 
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
+    @PropertyName("type")
     public int getType() {
         return type;
     }
 
+    @PropertyName("type")
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getSenderOrReceiverType() {return senderOrReceiverType;
+    }
+
+    public void setSenderOrReceiverType(int senderOrReceiverType) {
+        this.senderOrReceiverType = senderOrReceiverType;
     }
 }

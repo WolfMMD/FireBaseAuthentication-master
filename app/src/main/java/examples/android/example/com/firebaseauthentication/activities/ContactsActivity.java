@@ -8,22 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import examples.android.example.com.firebaseauthentication.R;
-import examples.android.example.com.firebaseauthentication.activities.chatting.ChatActivity;
 import examples.android.example.com.firebaseauthentication.adapters.ContactsAdapter;
 import examples.android.example.com.firebaseauthentication.data.UserData;
 import examples.android.example.com.firebaseauthentication.databinding.ListUsersBinding;
@@ -53,9 +42,7 @@ public class ContactsActivity extends AppCompatActivity implements ContactsInter
 
     private void initSearchEditText() {
 
-        usersBinding.search.setOnClickListener(v -> {
-            usersBinding.search.setText(" ");
-        });
+        usersBinding.search.setOnClickListener(v -> usersBinding.search.setText(""));
 
 
         usersBinding.search.addTextChangedListener(new TextWatcher() {
@@ -99,7 +86,7 @@ public class ContactsActivity extends AppCompatActivity implements ContactsInter
     public void setClickedUser(UserData userData) {
         Intent intent = new Intent(ContactsActivity.this, ChatActivity.class);
         intent.putExtra("partnerID",userData.getUserId());
-        intent.putExtra("partnerName",userData.getFullName());
+        intent.putExtra("partnerName",userData.getFullName()); // const
         startActivity(intent);
     }
 }

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,11 +32,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:paddingStart="12dp"
+            android:textColor="@color/com_facebook_messenger_blue"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/email"
-            app:layout_constraintTop_toBottomOf="@id/email"
-            android:paddingStart="12dp"
-            android:textColor="@color/com_facebook_messenger_blue"/>
+            app:layout_constraintTop_toBottomOf="@id/email" />
 
         <TextView
             android:id="@+id/passwordLabel"
@@ -61,11 +60,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:paddingStart="12dp"
+            android:textColor="@color/com_facebook_messenger_blue"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/password"
-            app:layout_constraintTop_toBottomOf="@id/password"
-            android:paddingStart="12dp"
-            android:textColor="@color/com_facebook_messenger_blue" />
+            app:layout_constraintTop_toBottomOf="@id/password" />
 
         <Button
             android:id="@+id/signIn"
@@ -95,7 +94,7 @@
             android:layout_height="20dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:text="@string/creatAccount"
+            android:text="@string/createAccount"
             android:textColor="@color/orange"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -121,8 +120,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/signUp"
-            >
+            app:layout_constraintTop_toBottomOf="@id/signUp">
 
             <Button
                 android:id="@+id/facebookLoginButton"
@@ -138,20 +136,17 @@
                 />
 
 
-                <Button
-                    android:id="@+id/signUpWithGoogle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/common_google_signin_btn_icon_dark_normal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/facebookLoginButton"
-                   />
-
-
+            <Button
+                android:id="@+id/signUpWithGoogle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/common_google_signin_btn_icon_dark_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/facebookLoginButton" />
 
 
             <Button
@@ -165,12 +160,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpWithGoogle" />
 
-    </LinearLayout>
+        </LinearLayout>
 
 
-
-
-
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </layout>

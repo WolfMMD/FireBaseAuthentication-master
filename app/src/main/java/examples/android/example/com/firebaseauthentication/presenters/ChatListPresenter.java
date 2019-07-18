@@ -13,7 +13,7 @@ public class ChatListPresenter implements ChatListInterface.Presenter {
         model=new ChatListModel();
     }
     @Override
-    public void callGetAllUserChats() {
+    public void getChat() {
 
         model.getAllUserChats();
     }

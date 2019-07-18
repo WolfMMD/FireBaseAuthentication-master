@@ -60,8 +60,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
             recyclerItemsBinding.userName.setOnClickListener(v -> {
 
-                Toast.makeText(v.getContext(), "Clicked", Toast.LENGTH_LONG).show();
-
                 toActivityInterface.setClickedUser(userData);
 
 

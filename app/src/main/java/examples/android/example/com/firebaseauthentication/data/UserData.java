@@ -7,7 +7,7 @@ public class UserData {
     private String userEmail;
 
     public UserData() {
-        // empty constructor
+
     }
 
     public String getFullName() {

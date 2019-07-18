@@ -1,7 +1,7 @@
 package examples.android.example.com.firebaseauthentication.interfaces;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.firestore.QuerySnapshot;
+import android.net.Uri;
+
 import java.util.List;
 import examples.android.example.com.firebaseauthentication.data.Message;
 
@@ -14,11 +14,13 @@ public interface ChatInterface {
     interface Model{
        void getChatMessages(String partnerID);
        void addMessageToDB(String messageBody,String partnerID);
+       void addImageToDB(Uri selectedImageUri);
     }
     interface Presenter{
-        void callGetChatMessages(String partnerID);
+        void getMessagesFor(String partnerID);
         void callAddMessageToDB(String messageBody,String partnerID);
         void onMessagesReceived(List<Message> chatMessages);
+        void callAddImageToDB(Uri selectedImageUri);
     }
 
 

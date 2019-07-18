@@ -4,6 +4,7 @@ import android.util.Patterns;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 
+import examples.android.example.com.firebaseauthentication.aAMessagingTestPckg.UsersManager;
 import examples.android.example.com.firebaseauthentication.interfaces.SignUpInterface;
 import examples.android.example.com.firebaseauthentication.data.Constants;
 import examples.android.example.com.firebaseauthentication.models.SignUpModel;
@@ -32,6 +33,7 @@ public class SignUpPresenter implements SignUpInterface.Presenter {
 
                   view.signedUpSuccessfully();
                   callSendVerificationEmail(fullName);
+                    UsersManager.getInstance().updateUserToken(UsersManager.getInstance().getUserToken());
 
                 } else {
                     view.signedUpFailed();

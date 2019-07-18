@@ -6,7 +6,7 @@ public interface ChatListInterface {
         void setUserChatsList();
     }
     interface Presenter{
-        void callGetAllUserChats();
+        void getChat();
     }
     interface Model{
         void getAllUserChats();

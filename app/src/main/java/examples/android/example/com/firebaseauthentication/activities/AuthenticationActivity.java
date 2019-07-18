@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,8 +20,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import examples.android.example.com.firebaseauthentication.R;
+import examples.android.example.com.firebaseauthentication.aAMessagingTestPckg.MyFirebaseMessagingService;
 import examples.android.example.com.firebaseauthentication.databinding.AuthenticationBinding;
 import examples.android.example.com.firebaseauthentication.interfaces.AuthenticationInterface;
 import examples.android.example.com.firebaseauthentication.data.Constants;
@@ -49,7 +52,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
+       // FacebookSdk.sdkInitialize(this.getApplicationContext());
         authBinding = DataBindingUtil.setContentView(this, R.layout.authentication);
 
         presenter = new AuthenticationPresenter(this);
@@ -72,8 +75,8 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         //onEditTextChanged();
 
 
-    }
 
+    }
 
 //    public void onEditTextChanged() {
 //
@@ -299,6 +302,8 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         authBinding.password.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_info_outline_black_24dp, 0);
         authBinding.passFeedbackMsg.setText(feedback);
     }
+
+
 
 
 
